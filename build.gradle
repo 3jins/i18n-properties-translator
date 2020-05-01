@@ -25,12 +25,18 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.apache.httpcomponents:httpclient:4.5.12'
-    implementation 'org.apache.commons:commons-lang3:3.10'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
+
+    // util
+    implementation 'org.apache.httpcomponents:httpclient:4.5.12'
+    implementation 'org.apache.commons:commons-lang3:3.10'
+    compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.7'
+    compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version: '1.9.13'
+
+    // test
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }

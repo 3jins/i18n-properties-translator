@@ -12,8 +12,8 @@ import java.util.Arrays;
 public enum LanguageType {
     KO("Korean", "ko"),
     JA("Japanese", "ja"),
-    ZH_CN("simplified Chinese", "zh-cn"),
-    ZH_TW("traditional Chinese", "zh-tw"),
+    ZH_CN("simplified Chinese", "zh-CN"),
+    ZH_TW("traditional Chinese", "zh-TW"),
     HI("Hindi", "hi"),
     EN("English", "en"),
     ES("Espanol", "es"),
