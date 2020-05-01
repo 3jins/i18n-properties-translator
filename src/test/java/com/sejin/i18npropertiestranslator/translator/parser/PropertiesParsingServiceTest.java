@@ -32,7 +32,7 @@ class PropertiesParsingServiceTest {
                 .append(keys[0] + "=" + values[0] + "\n")
                 .append(keys[1] + "=" + values[1] + "\n") // value에 '=' 포함
                 .append("\n") // 중간 공백
-                .append(keys[2] + "=" + values[2] + "\n")
+                .append(keys[2] + " =  " + values[2] + "\n") // '=' 전후에 공백
                 .toString();
 
         final Map<String, String> result = propertiesParsingService.parsePropertiesRawContent(propertiesRawContent);

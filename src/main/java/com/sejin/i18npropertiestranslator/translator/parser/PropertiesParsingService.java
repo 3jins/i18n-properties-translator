@@ -20,8 +20,8 @@ public class PropertiesParsingService {
                         throw new PropertiesDataFormatException(null, property);
                     }
                     return new String[]{
-                            property.substring(0, separatorIdx),
-                            property.substring(separatorIdx + 1)
+                            property.substring(0, separatorIdx).trim(),
+                            property.substring(separatorIdx + 1).trim()
                     };
                 })
                 .collect(Collectors.toMap(property -> property[0], property -> property[1]));
