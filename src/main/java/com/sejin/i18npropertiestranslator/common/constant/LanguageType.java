@@ -3,6 +3,9 @@ package com.sejin.i18npropertiestranslator.common.constant;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Arrays;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -28,4 +31,11 @@ public enum LanguageType {
 
     private final String name;
     private final String papagoCode;
+
+    public static LanguageType getLanguageTypeByPapagoCode(final String papagoCode) {
+        return Arrays.stream(values())
+                .filter(languageType -> StringUtils.equalsIgnoreCase(languageType.papagoCode, papagoCode))
+                .findFirst()
+                .orElse(null);
+    }
 }
