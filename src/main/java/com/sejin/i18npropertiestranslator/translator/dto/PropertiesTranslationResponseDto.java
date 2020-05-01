@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Getter
 @Builder
-public class PropertiesTranslationResDto {
+public class PropertiesTranslationResponseDto {
     private LanguageType languageType;
     private Map<String, String> translatedPropertiesData;
 }
