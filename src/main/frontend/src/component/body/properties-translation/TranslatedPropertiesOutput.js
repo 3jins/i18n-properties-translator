@@ -1,17 +1,18 @@
 import React, {useContext} from 'react';
 import propertiesContentContext from '../../../context/PropertiesContentContext';
 import languageTypeMap from '../../../constant/languageTypeMap';
+import './TranslatedPropertiesOutput.css';
 
 export default () => {
   const {propertiesTranslationResponse} = useContext(propertiesContentContext);
 
   const renderPropertiesTranslationResponse = () => (
-    <div>
+    <div className="translation-output-list">
       {propertiesTranslationResponse
         .map(propertiesTranslation => (
-          <div key={propertiesTranslation.languageType}>
-            <p>{languageTypeMap[propertiesTranslation.languageType]}</p>
-            {formatPropertiesDataObject(propertiesTranslation.translatedPropertiesData)}
+          <div className="translation-output" key={propertiesTranslation.languageType}>
+            <p className="language-type">{languageTypeMap[propertiesTranslation.languageType]}</p>
+            <div className="translated-properties-content">{formatPropertiesDataObject(propertiesTranslation.translatedPropertiesData)}</div>
           </div>
         ))}
     </div>
@@ -20,7 +21,7 @@ export default () => {
   const formatPropertiesDataObject = (propertiesDataObject) => Object.keys(propertiesDataObject)
     .map(propertyKey => [propertyKey, propertiesDataObject[propertyKey]].join('='))
     .map((formattedPropertyData, idx) => (
-      <span key={['formattedPropertyData', idx].join('-')}>{formattedPropertyData}</span>
+      <span className="formatted-property-data" key={['formattedPropertyData', idx].join('-')}>{formattedPropertyData}</span>
     ));
 
   return (

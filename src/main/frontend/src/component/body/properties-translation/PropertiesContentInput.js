@@ -4,6 +4,7 @@ import _ from 'lodash';
 import apiUrlMap from '../../../constant/apiUrlMap';
 import languageTypeMap from '../../../constant/languageTypeMap';
 import PropertiesContentContext from '../../../context/PropertiesContentContext';
+import './PropertiesContentInput.css';
 
 export default () => {
   const {baseUrl, propertiesTranslation} = apiUrlMap;
@@ -23,7 +24,7 @@ export default () => {
     <div className="target-language-type-checkbox-list">
       <div className="target-language-type-checkbox all-checkbox">
         <input value="all" type="checkbox" checked={checkAll} onChange={handleClickCheckAll}/>
-        <span>all</span>
+        <span>ALL</span>
       </div>
       {Object.keys(checkedStateMap).map((key) => (
         <div key={key} className="target-language-type-checkbox">
@@ -106,7 +107,7 @@ export default () => {
   ].join('\n');
 
   return (
-    <div className="properties-content-input">
+    <div className="PropertiesContentInput">
       <form onSubmit={handleSubmitPropertiesContent}>
         <textarea value={propertiesContentText} placeholder={hintMessage} onChange={handleChangePropertiesContent}/>
         {renderCheckboxList()}

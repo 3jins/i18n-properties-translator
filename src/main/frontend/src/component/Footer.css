@@ -1,0 +1,20 @@
+.Footer {
+  padding: 5rem 0;
+}
+
+.Footer .footer-start-line {
+  width: 35%;
+}
+
+.Footer .developer-introduction {
+  padding: 5rem 0;
+}
+
+/* table */
+.Footer .developer-introduction table{
+  width: 30rem;
+  margin: 0 auto;
+}
+.Footer .developer-introduction table tr{
+  height: 3rem;
+}
