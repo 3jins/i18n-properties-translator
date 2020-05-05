@@ -1,26 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
+import PropertiesContentContext from './context/PropertiesContentContext';
+import Header from './component/Header';
+import PropertiesTranslation from './component/body/properties-translation/PropertiesTranslation';
+import Footer from "./component/Footer";
 import './App.css';
 
-function App() {
+export default () => {
+  const [propertiesTranslationResponse, setPropertiesTranslationResponse] = useState([]);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+      <header className="app-header">
+        <Header/>
       </header>
+      <div className="app-body">
+        <PropertiesContentContext.Provider value={{propertiesTranslationResponse, setPropertiesTranslationResponse}}>
+          <PropertiesTranslation/>
+        </PropertiesContentContext.Provider>
+      </div>
+      <footer className="app-footer">
+        <Footer/>
+      </footer>
     </div>
   );
-}
-
-export default App;
+};
