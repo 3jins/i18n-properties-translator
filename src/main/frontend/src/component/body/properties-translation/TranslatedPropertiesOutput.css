@@ -1,0 +1,18 @@
+.TranslatedPropertiesOutput .language-type {
+  text-align: left;
+  font-weight: bold;
+  margin-bottom: .5rem;
+  font-size: 1.4rem;
+}
+
+/* properties */
+.TranslatedPropertiesOutput .translated-properties-content {
+  text-align: left;
+  border: white solid 2px;
+  padding: .5rem;
+  background-color: #fff0e0;
+  color: black;
+}
+.TranslatedPropertiesOutput .formatted-property-data {
+  display: block;
+}

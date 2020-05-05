@@ -1,0 +1,36 @@
+/* textarea */
+.PropertiesContentInput textarea {
+  width: calc(100% - 2 * .5rem);
+  height: calc(50vh);
+  font-size: 1rem;
+  background-color: #282c34;
+  color: white;
+  resize: none;
+  padding: .5rem;
+}
+
+/* checkbox */
+.PropertiesContentInput .target-language-type-checkbox-list {
+  margin: .2rem 0;
+}
+.PropertiesContentInput .target-language-type-checkbox {
+  margin: 0 .5rem;
+  line-height: 2rem;
+  display: inline;
+}
+.PropertiesContentInput .target-language-type-checkbox {
+  white-space: nowrap;
+}
+.PropertiesContentInput .all-checkbox {
+  color: #ff6060;
+}
+
+/* submit button */
+.PropertiesContentInput .submit-button {
+  margin: 1rem;
+  width: 10rem;
+  height: 2rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  background-color: #ff6060;
+}
