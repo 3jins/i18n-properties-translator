@@ -3,6 +3,7 @@ package com.sejin.i18npropertiestranslator.translator;
 import com.sejin.i18npropertiestranslator.common.constant.LanguageType;
 import com.sejin.i18npropertiestranslator.translator.dto.PropertiesTranslationParamDto;
 import com.sejin.i18npropertiestranslator.translator.dto.PropertiesTranslationResponseDto;
+import com.sejin.i18npropertiestranslator.translator.dto.PropertyDto;
 import com.sejin.i18npropertiestranslator.translator.papago.nmt.PapagoNmtService;
 import com.sejin.i18npropertiestranslator.translator.parser.PropertiesParsingService;
 import org.junit.jupiter.api.Test;
@@ -43,6 +44,7 @@ class PropertiesTranslationServiceTest {
         final String propertiesRawKey = "lyrics";
         final String propertiesRawValue = "나는 나는 저팔계 왜 날 싫어하나";
         final String propertiesRawContent = propertiesRawKey + "=" + propertiesRawValue;
+        final String propertiesRawComment = "날아라 슈퍼보드에 나온 노래";
         final LanguageType sourceLanguageType = LanguageType.KO;
         final List<LanguageType> targetLanguageTypeList = List.of(
                 LanguageType.KO,
@@ -56,8 +58,13 @@ class PropertiesTranslationServiceTest {
                 .targetLanguageTypeList(targetLanguageTypeList)
                 .build();
 
-        final Map<String, String> propertiesData = new HashMap<>();
-        propertiesData.put(propertiesRawKey, propertiesRawValue);
+        final List<PropertyDto> propertiesData = List.of(
+                PropertyDto.builder()
+                        .key(propertiesRawKey)
+                        .value(propertiesRawValue)
+                        .comment(propertiesRawComment)
+                        .build()
+        );
         doReturn(propertiesData).when(propertiesParsingService).parsePropertiesRawContent(anyString());
         final String translatedToHangukmal = "나는 나는 저팔계 왜 날 싫어하나";
         final String translatedToEnglish = "I\'m I\'m Zhu Bajie Why does everybody hate me";

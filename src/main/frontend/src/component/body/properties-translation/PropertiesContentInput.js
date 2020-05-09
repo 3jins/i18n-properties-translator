@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useContext} from 'react';
 import axios from 'axios';
 import _ from 'lodash';
 import apiUrlMap from '../../../constant/apiUrlMap';
@@ -8,7 +8,7 @@ import './PropertiesContentInput.css';
 
 export default () => {
   const {baseUrl, propertiesTranslation} = apiUrlMap;
-  const {propertiesTranslationResponse, setPropertiesTranslationResponse} = useContext(PropertiesContentContext);
+  const {setPropertiesTranslationResponse} = useContext(PropertiesContentContext);
   const [propertiesContentText, setPropertiesContentText] = useState();
 
   const convertLanguageTypeMapToCheckedStateMap = () => {

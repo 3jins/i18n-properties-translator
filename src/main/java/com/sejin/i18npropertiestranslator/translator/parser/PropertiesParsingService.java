@@ -1,30 +1,48 @@
 package com.sejin.i18npropertiestranslator.translator.parser;
 
 import com.sejin.i18npropertiestranslator.common.exception.PropertiesDataFormatException;
+import com.sejin.i18npropertiestranslator.translator.dto.PropertyDto;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
-import java.util.Map;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class PropertiesParsingService {
-    public Map<String, String> parsePropertiesRawContent(final String propertiesRawContent) {
+    public List<PropertyDto> parsePropertiesRawContent(final String propertiesRawContent) {
         final String[] properties = propertiesRawContent.split("\n");
-        final Map<String, String> propertiesData = Arrays.stream(properties)
-                .filter(property -> !StringUtils.isEmpty(property))
+        return Arrays.stream(properties)
                 .map(property -> {
-                    final int separatorIdx = property.indexOf('=');
-                    if (separatorIdx < 0) {
+                    if (StringUtils.isEmpty(property)) {
+                        return PropertyDto.builder().build();
+                    }
+
+                    final int commentSeparatorIdx = property.indexOf('#');
+                    final String comment = commentSeparatorIdx >= 0 ? property.substring(commentSeparatorIdx + 1) : null;
+                    if (commentSeparatorIdx == 0) {
+                        return PropertyDto.builder().comment(comment).build();
+                    }
+
+                    final int valueSeparatorIdx = property.indexOf('=');
+                    if (valueSeparatorIdx < 0 && commentSeparatorIdx < 0) {
                         throw new PropertiesDataFormatException(null, property);
                     }
-                    return new String[]{
-                            property.substring(0, separatorIdx).trim(),
-                            property.substring(separatorIdx + 1).trim()
-                    };
+                    final String key = property.substring(0, valueSeparatorIdx).trim();
+                    if (StringUtils.isEmpty(key)) {
+                        throw new PropertiesDataFormatException(null, property);
+                    }
+                    final String value = commentSeparatorIdx < 0
+                            ? property.substring(valueSeparatorIdx + 1).trim()
+                            : property.substring(valueSeparatorIdx + 1, commentSeparatorIdx).trim();
+
+                    return PropertyDto.builder()
+                            .key(key)
+                            .value(value)
+                            .comment(comment)
+                            .build();
                 })
-                .collect(Collectors.toMap(property -> property[0], property -> property[1]));
-        return propertiesData;
+                .collect(Collectors.toList());
     }
 }

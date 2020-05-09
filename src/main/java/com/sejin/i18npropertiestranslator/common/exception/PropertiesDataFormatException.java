@@ -1,8 +1,8 @@
 package com.sejin.i18npropertiestranslator.common.exception;
 
 import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
-import org.springframework.util.StringUtils;
 
 @Getter
 public class PropertiesDataFormatException extends RuntimeException {

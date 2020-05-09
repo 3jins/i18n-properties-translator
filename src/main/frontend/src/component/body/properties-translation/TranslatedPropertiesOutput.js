@@ -1,47 +1,63 @@
 import React, {useContext} from 'react';
+import _ from 'lodash';
 import propertiesContentContext from '../../../context/PropertiesContentContext';
 import languageTypeMap from '../../../constant/languageTypeMap';
 import './TranslatedPropertiesOutput.css';
-import download from './download-2-16.png';
+import download from './download.png';
 
 export default () => {
   const {propertiesTranslationResponse} = useContext(propertiesContentContext);
 
-  const renderPropertiesTranslationResponse = () => (
-    <div className="translation-output-list">
-      {propertiesTranslationResponse
-        .map(propertiesTranslation => (
-          <div className="translation-output" key={propertiesTranslation.languageType}>
-            <p className="language-type">
-              {languageTypeMap[propertiesTranslation.languageType]}
-              <a className="download-button"
-                 download={`i18n_${propertiesTranslation.languageType}.properties`}
-                 href={`data:application/octet-stream;,${formatPropertiesDataObjectForDownload(propertiesTranslation.translatedPropertiesData)}`}>
-                <img src={download}/>
-              </a>
-            </p>
-            <div className="translated-properties-content">
-              {formatPropertiesDataObject(propertiesTranslation.translatedPropertiesData)}
-            </div>
-          </div>
-        ))}
-    </div>
-  );
+  const formatSinglePropertyData = (propertyData) => {
+    if (_.isEmpty(propertyData.key)) {
+      if (_.isEmpty(propertyData.comment)) {
+        return '';
+      }
+      return ['#', propertyData.comment].join('');
+    }
+    const keyValue = [propertyData.key, propertyData.value].join('=');
 
-  const formatPropertiesDataObject = (propertiesDataObject) => Object.keys(propertiesDataObject)
-    .map(propertyKey => [propertyKey, propertiesDataObject[propertyKey]].join('='))
-    .map((formattedPropertyData, idx) => (
-      <span className="formatted-property-data"
-            key={['formattedPropertyData', idx].join('-')}>{formattedPropertyData}</span>
-    ));
+    return _.isEmpty(propertyData.comment)
+      ? keyValue
+      : [keyValue, propertyData.comment].join(' #');
+  };
 
-  const formatPropertiesDataObjectForDownload = (propertiesDataObject) => Object.keys(propertiesDataObject)
-    .map(propertyKey => [propertyKey, propertiesDataObject[propertyKey]].join('='))
+  const formatPropertiesDataList = propertiesDataList => propertiesDataList
+    .map(propertyData => formatSinglePropertyData(propertyData))
+    .map((formattedPropertyData, idx) => _.isEmpty(formattedPropertyData)
+      ? <br key={['formattedPropertyData', idx].join('-')}/>
+      : (
+        <span className="formatted-property-data" key={['formattedPropertyData', idx].join('-')}>
+          {formattedPropertyData}
+        </span>
+      ));
+
+  const formatPropertiesDataListForDownload = propertiesDataList => propertiesDataList
+    .map(propertyData => formatSinglePropertyData(propertyData))
     .join('\n');
+
+  const makeDownloadUrl = fileContent => URL.createObjectURL(new Blob([fileContent]));
 
   return (
     <div className="TranslatedPropertiesOutput">
-      {renderPropertiesTranslationResponse()}
+      <div className="translation-output-list">
+        {propertiesTranslationResponse
+          .map(propertiesTranslation => (
+            <div className="translation-output" key={propertiesTranslation.languageType}>
+              <p className="language-type">
+                {languageTypeMap[propertiesTranslation.languageType]}
+                <a className="download-button"
+                   download={`i18n_${propertiesTranslation.languageType}.properties`}
+                   href={makeDownloadUrl(formatPropertiesDataListForDownload(propertiesTranslation.translatedPropertiesData))}>
+                  <img src={download} alt="download icon"/>
+                </a>
+              </p>
+              <div className="translated-properties-content">
+                {formatPropertiesDataList(propertiesTranslation.translatedPropertiesData)}
+              </div>
+            </div>
+          ))}
+      </div>
     </div>
   );
 };

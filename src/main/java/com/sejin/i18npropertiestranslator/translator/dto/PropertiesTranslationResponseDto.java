@@ -4,11 +4,12 @@ import com.sejin.i18npropertiestranslator.common.constant.LanguageType;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.List;
 import java.util.Map;
 
 @Getter
 @Builder
 public class PropertiesTranslationResponseDto {
-    private LanguageType languageType;
-    private Map<String, String> translatedPropertiesData;
+    private String languageType;
+    private List<PropertyDto> translatedPropertiesData;
 }
