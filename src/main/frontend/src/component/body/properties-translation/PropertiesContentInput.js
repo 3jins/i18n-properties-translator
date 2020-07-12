@@ -8,7 +8,7 @@ import './PropertiesContentInput.css';
 
 export default () => {
   const {baseUrl, propertiesTranslation} = apiUrlMap;
-  const {setPropertiesTranslationResponse} = useContext(PropertiesContentContext);
+  const {setPropertiesTranslationResponse, setIsLoading} = useContext(PropertiesContentContext);
   const [propertiesContentText, setPropertiesContentText] = useState();
 
   const convertLanguageTypeMapToCheckedStateMap = () => {
@@ -62,6 +62,7 @@ export default () => {
     if (_.isEmpty(propertiesContentText)) {
       return alert('properties 내용을 붙여넣어주세요.');
     }
+    setIsLoading(true);
     axios
       .post([baseUrl, propertiesTranslation].join(''), {
         propertiesRawContent: propertiesContentText,
@@ -91,7 +92,8 @@ export default () => {
         }
         alert('내부 서버 장애가 발생했습니다.');
         console.error(errorMessage);
-      });
+      })
+      .finally(() => setIsLoading(false));
   };
 
   const handleChangePropertiesContent = (event) => setPropertiesContentText(event.target.value);
