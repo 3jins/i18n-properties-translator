@@ -1,0 +1,26 @@
+.App {
+  text-align: center;
+  background-color: #181922;
+  color: #fff0e0;
+}
+
+.App .app-header {
+  header: 6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #ff6060;
+  font-family: Mont-HeavyDEMO
+}
+
+.App .app-body {
+  padding: 1rem 0;
+}
+
+.App .app-body>div {
+  width: 80%;
+  max-width: 60rem;
+  margin: 0rem auto;
+}

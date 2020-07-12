@@ -1,0 +1,11 @@
+spring:
+  profiles:
+    active: LOCAL
+
+papago:
+  nmt:
+    url: https://openapi.naver.com/v1/papago/n2mt
+    client-id: tDrNMvbF8nQUL7HaCFau
+    client-secret: KZCo0RiBTj
+#    client-id: rfm4ADlqmyxjW0Qi1n9Q
+#    client-secret: GtNbfIxum6

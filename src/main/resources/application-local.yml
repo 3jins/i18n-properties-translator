@@ -1,0 +1,5 @@
+spring:
+  profiles: LOCAL
+
+server:
+  port: 5913
