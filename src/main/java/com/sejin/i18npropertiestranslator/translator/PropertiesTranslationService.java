@@ -47,7 +47,9 @@ public class PropertiesTranslationService {
         if (StringUtils.isEmpty(propertyKey) && StringUtils.isEmpty(propertyValue)) {
             return PropertyDto.builder().comment(propertyComment).build();
         }
-        final String translatedValue = translationServiceList.stream()
+        final String translatedValue = StringUtils.isEmpty(propertyValue)
+                ? ""
+                : translationServiceList.stream()
                 .filter(translationService -> translationService.supports(translatorName))
                 .findFirst()
                 .orElseThrow(NotSupportedTranslatorException::new)
