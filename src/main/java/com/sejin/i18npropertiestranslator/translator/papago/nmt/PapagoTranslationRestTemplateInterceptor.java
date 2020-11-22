@@ -12,7 +12,7 @@ import java.io.IOException;
 
 @RequiredArgsConstructor
 @Slf4j
-public class PapagoNmtRestTemplateInterceptor implements ClientHttpRequestInterceptor {
+public class PapagoTranslationRestTemplateInterceptor implements ClientHttpRequestInterceptor {
     private final String clientId;
     private final String clientSecret;
 

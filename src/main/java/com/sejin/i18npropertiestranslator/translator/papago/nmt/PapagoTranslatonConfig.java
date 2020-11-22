@@ -20,7 +20,7 @@ import java.util.List;
 @Configuration
 @EnableConfigurationProperties
 @ConfigurationProperties(prefix = "papago.nmt")
-public class PapagoNmtConfig {
+public class PapagoTranslatonConfig {
     @NonNull
     private String url;
     @NonNull
@@ -29,11 +29,11 @@ public class PapagoNmtConfig {
     private String clientSecret;
 
     @Bean
-    public RestTemplate papagoNmtRestTemplate() {
-        final RestTemplate papagoNmtRestTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
-        final List<ClientHttpRequestInterceptor> interceptors = papagoNmtRestTemplate.getInterceptors();
-        interceptors.add(new PapagoNmtRestTemplateInterceptor(clientId, clientSecret));
-        papagoNmtRestTemplate.setInterceptors(CollectionUtils.isEmpty(interceptors) ? new ArrayList<>() : interceptors);
-        return papagoNmtRestTemplate;
+    public RestTemplate papagoTranslationRestTemplate() {
+        final RestTemplate papagoTranslationRestTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
+        final List<ClientHttpRequestInterceptor> interceptors = papagoTranslationRestTemplate.getInterceptors();
+        interceptors.add(new PapagoTranslationRestTemplateInterceptor(clientId, clientSecret));
+        papagoTranslationRestTemplate.setInterceptors(CollectionUtils.isEmpty(interceptors) ? new ArrayList<>() : interceptors);
+        return papagoTranslationRestTemplate;
     }
 }

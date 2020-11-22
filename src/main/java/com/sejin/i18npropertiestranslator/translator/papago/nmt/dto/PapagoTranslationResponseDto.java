@@ -10,22 +10,22 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PapagoNmtResponseDto {
-    private PapagoNmtResponseMessageResultDto message;
+public class PapagoTranslationResponseDto {
+    private PapagoTranslationResponseMessageResultDto message;
 
     @Builder
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class PapagoNmtResponseMessageResultDto{
-        private PapagoNmtResponseResultDto result;
+    public static class PapagoTranslationResponseMessageResultDto {
+        private PapagoTranslationResponseResultDto result;
     }
 
     @Builder
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class PapagoNmtResponseResultDto{
+    public static class PapagoTranslationResponseResultDto {
         private String translatedText;
         @JsonProperty("srcLangType")
         private String sourceLanguageType;

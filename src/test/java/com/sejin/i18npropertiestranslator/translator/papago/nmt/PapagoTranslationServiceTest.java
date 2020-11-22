@@ -13,11 +13,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = {PapagoNmtService.class, PapagoNmtConfig.class})
+@SpringBootTest(classes = {PapagoTranslationService.class, PapagoTranslatonConfig.class})
 @ActiveProfiles("TEST")
-class PapagoNmtServiceTest {
+class PapagoTranslationServiceTest {
     @Autowired
-    private PapagoNmtService papagoNmtService;
+    private PapagoTranslationService papagoTranslator;
 
     @Test
     void translate() {
@@ -25,7 +25,7 @@ class PapagoNmtServiceTest {
         final LanguageType sourceLanguageType = LanguageType.KO;
         final LanguageType targetLanguageType = LanguageType.EN;
 
-        final String result = papagoNmtService.translate(text, sourceLanguageType, targetLanguageType);
+        final String result = papagoTranslator.translate(text, sourceLanguageType, targetLanguageType);
         log.debug("papago nmt result = {}", result);
         assertThat(result).isNotEmpty();
         assertThat(result).isNotEqualTo(text);
