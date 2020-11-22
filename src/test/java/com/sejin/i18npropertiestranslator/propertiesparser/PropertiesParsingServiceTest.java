@@ -1,9 +1,8 @@
-package com.sejin.i18npropertiestranslator.translator.parser;
+package com.sejin.i18npropertiestranslator.propertiesparser;
 
 import com.sejin.i18npropertiestranslator.common.exception.PropertiesDataFormatException;
-import com.sejin.i18npropertiestranslator.translator.dto.PropertyDto;
+import com.sejin.i18npropertiestranslator.propertiesparser.dto.PropertyDto;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ArrayUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

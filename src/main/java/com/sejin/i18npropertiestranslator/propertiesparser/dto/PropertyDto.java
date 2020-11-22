@@ -1,8 +1,7 @@
-package com.sejin.i18npropertiestranslator.translator.dto;
+package com.sejin.i18npropertiestranslator.propertiesparser.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NonNull;
 
 @Getter
 @Builder
