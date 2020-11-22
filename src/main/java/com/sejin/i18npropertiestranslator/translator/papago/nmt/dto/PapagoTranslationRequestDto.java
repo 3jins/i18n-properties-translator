@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class PapagoNmtRequestDto {
+public class PapagoTranslationRequestDto {
     private String text;
     @JsonProperty("source")
     private String sourceLanguageType;
