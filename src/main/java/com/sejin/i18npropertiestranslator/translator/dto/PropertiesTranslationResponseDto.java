@@ -1,11 +1,10 @@
 package com.sejin.i18npropertiestranslator.translator.dto;
 
-import com.sejin.i18npropertiestranslator.common.constant.LanguageType;
+import com.sejin.i18npropertiestranslator.propertiesparser.dto.PropertyDto;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
-import java.util.Map;
 
 @Getter
 @Builder

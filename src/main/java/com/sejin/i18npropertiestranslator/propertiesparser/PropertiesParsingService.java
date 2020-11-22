@@ -1,7 +1,7 @@
-package com.sejin.i18npropertiestranslator.translator.parser;
+package com.sejin.i18npropertiestranslator.propertiesparser;
 
 import com.sejin.i18npropertiestranslator.common.exception.PropertiesDataFormatException;
-import com.sejin.i18npropertiestranslator.translator.dto.PropertyDto;
+import com.sejin.i18npropertiestranslator.propertiesparser.dto.PropertyDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
