@@ -2,11 +2,11 @@ package com.sejin.i18npropertiestranslator.translator;
 
 import com.sejin.i18npropertiestranslator.common.constant.LanguageType;
 import com.sejin.i18npropertiestranslator.common.constant.TranslatorName;
-import com.sejin.i18npropertiestranslator.common.exception.NotSupportedTranslatorException;
-import com.sejin.i18npropertiestranslator.translator.dto.PropertiesTranslationParamDto;
-import com.sejin.i18npropertiestranslator.translator.dto.PropertiesTranslationResponseDto;
-import com.sejin.i18npropertiestranslator.propertiesparser.dto.PropertyDto;
 import com.sejin.i18npropertiestranslator.propertiesparser.PropertiesParsingService;
+import com.sejin.i18npropertiestranslator.propertiesparser.dto.PropertyDto;
+import com.sejin.i18npropertiestranslator.translator.dto.PropertiesTranslationParamDto;
+import com.sejin.i18npropertiestranslator.translator.dto.PropertiesTranslationParsedParamDto;
+import com.sejin.i18npropertiestranslator.translator.dto.PropertiesTranslationResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -18,18 +18,17 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PropertiesTranslationService {
     private final PropertiesParsingService propertiesParsingService;
-    private final List<TranslationService> translationServiceList;
 
-    public List<PropertiesTranslationResponseDto> translatePropertiesData(final PropertiesTranslationParamDto paramDto) {
+    public List<PropertiesTranslationResponseDto> translatePropertiesData(final PropertiesTranslationParamDto paramDto, final TranslationService translationService) {
         final LanguageType sourceLanguageType = paramDto.getSourceLanguageType();
-        final List<PropertyDto> propertyList = propertiesParsingService
-                .parsePropertiesRawContent(paramDto.getPropertiesRawContent());
+        final List<PropertyDto> propertyList = propertiesParsingService.parsePropertiesRawContent(paramDto.getPropertiesRawContent());
         final TranslatorName translatorName = paramDto.getTranslatorName();
 
         return paramDto.getTargetLanguageTypeList().stream()
                 .map(targetLanguageType -> {
-                    final List<PropertyDto> translatedPropertiesData = propertyList.stream()
-                            .map(propertiesParsingResult -> translatePropertyData(propertiesParsingResult, sourceLanguageType, targetLanguageType, translatorName))
+                    final List<PropertiesTranslationParsedParamDto> parsedParamDtoList = makeParsedParamDtoList(propertyList, sourceLanguageType, targetLanguageType);
+                    final List<PropertyDto> translatedPropertiesData = parsedParamDtoList.stream()
+                            .map(parsedParamDto -> translatePropertyData(parsedParamDto, translationService))
                             .collect(Collectors.toList());
                     return PropertiesTranslationResponseDto.builder()
                             .languageType(targetLanguageType.getPapagoCode())
@@ -39,25 +38,28 @@ public class PropertiesTranslationService {
                 .collect(Collectors.toList());
     }
 
-    private PropertyDto translatePropertyData(PropertyDto propertiesParsingResult, LanguageType sourceLanguageType, LanguageType targetLanguageType, TranslatorName translatorName) {
-        final String propertyKey = propertiesParsingResult.getKey();
-        final String propertyValue = propertiesParsingResult.getValue();
-        final String propertyComment = propertiesParsingResult.getComment();
+    private List<PropertiesTranslationParsedParamDto> makeParsedParamDtoList(final List<PropertyDto> propertyList, final LanguageType sourceLanguageType, final LanguageType targetLanguageType) {
+        return propertyList.stream()
+                .map(property -> PropertiesTranslationParsedParamDto.builder()
+                        .property(property)
+                        .sourceLanguageType(sourceLanguageType)
+                        .targetLanguageType(targetLanguageType)
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    private PropertyDto translatePropertyData(final PropertiesTranslationParsedParamDto parsedParamDto, final TranslationService translationService) {
+        final PropertyDto propertyDto = parsedParamDto.getProperty();
+        final String propertyKey = propertyDto.getKey();
+        final String propertyValue = propertyDto.getValue();
+        final String propertyComment = propertyDto.getComment();
 
         if (StringUtils.isEmpty(propertyKey) && StringUtils.isEmpty(propertyValue)) {
             return PropertyDto.builder().comment(propertyComment).build();
         }
         final String translatedValue = StringUtils.isEmpty(propertyValue)
                 ? ""
-                : translationServiceList.stream()
-                .filter(translationService -> translationService.supports(translatorName))
-                .findFirst()
-                .orElseThrow(NotSupportedTranslatorException::new)
-                .translate(
-                        propertyValue,
-                        sourceLanguageType,
-                        targetLanguageType
-                );
+                : translationService.translate(parsedParamDto);
 
         return PropertyDto.builder()
                 .key(propertyKey)

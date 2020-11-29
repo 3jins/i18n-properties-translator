@@ -3,9 +3,11 @@ package com.sejin.i18npropertiestranslator.translator;
 import com.sejin.i18npropertiestranslator.common.constant.LanguageType;
 import com.sejin.i18npropertiestranslator.common.constant.TranslatorName;
 import com.sejin.i18npropertiestranslator.translator.dto.PropertiesTranslationParamDto;
+import com.sejin.i18npropertiestranslator.translator.dto.PropertiesTranslationParsedParamDto;
 import com.sejin.i18npropertiestranslator.translator.dto.PropertiesTranslationResponseDto;
 import com.sejin.i18npropertiestranslator.propertiesparser.dto.PropertyDto;
 import com.sejin.i18npropertiestranslator.propertiesparser.PropertiesParsingService;
+import com.sejin.i18npropertiestranslator.translator.papago.nmt.PapagoTranslationService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,8 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.doReturn;
 
 @ExtendWith(SpringExtension.class)
@@ -35,6 +36,9 @@ class PropertiesTranslationServiceTest {
 
     @MockBean
     private TranslationService translationService;
+
+    @MockBean
+    private PapagoTranslationService papagoTranslationService;
 
     @Test
     void translatePropertiesData() {
@@ -66,18 +70,9 @@ class PropertiesTranslationServiceTest {
         );
         doReturn(propertiesData).when(propertiesParsingService).parsePropertiesRawContent(anyString());
         doReturn(true).when(translationService).supports(eq(TranslatorName.PAPAGO));
-        final String translatedToHangukmal = "나는 나는 저팔계 왜 날 싫어하나";
-        final String translatedToEnglish = "I\'m I\'m Zhu Bajie Why does everybody hate me";
-        final String translatedToZhonguo = "我是 我是 猪八戒";
-        final String translatedToNihongo = "わたしは わたしは 猪八戒";
-        doReturn(translatedToHangukmal).when(translationService).translate(eq(propertiesRawValue), eq(LanguageType.KO), eq(LanguageType.KO));
-        doReturn(translatedToEnglish).when(translationService).translate(eq(propertiesRawValue), eq(LanguageType.KO), eq(LanguageType.EN));
-        doReturn(translatedToZhonguo).when(translationService).translate(eq(propertiesRawValue), eq(LanguageType.KO), eq(LanguageType.ZH_CN));
-        doReturn(translatedToNihongo).when(translationService).translate(eq(propertiesRawValue), eq(LanguageType.KO), eq(LanguageType.JA));
+        doReturn("무언가로 번역이 되었을겁니다.").when(translationService).translate(any(PropertiesTranslationParsedParamDto.class));
 
-        final String test = translationService.translate(propertiesRawContent, LanguageType.KO, LanguageType.KO);
-        final List<PropertiesTranslationResponseDto> result = propertiesTranslationService
-                .translatePropertiesData(paramDto);
+        final List<PropertiesTranslationResponseDto> result = propertiesTranslationService.translatePropertiesData(paramDto, papagoTranslationService);
         assertThat(result).hasSameSizeAs(targetLanguageTypeList);
     }
 }

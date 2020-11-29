@@ -17,11 +17,13 @@ import java.util.List;
 @RequestMapping("/translation")
 public class PropertiesTranslationController {
     private final ModelMapper modelMapper;
+    private final TranslationServiceSelector translationServiceSelector;
     private final PropertiesTranslationService propertiesTranslationService;
 
     @PostMapping("properties")
     public List<PropertiesTranslationResponseDto> translateProperties(@RequestBody final PropertiesTranslationRequestDto requestDto) {
         final PropertiesTranslationParamDto paramDto = modelMapper.map(requestDto, PropertiesTranslationParamDto.class);
-        return propertiesTranslationService.translatePropertiesData(paramDto);
+        final TranslationService translationService = translationServiceSelector.selectService(paramDto.getTranslatorName());
+        return propertiesTranslationService.translatePropertiesData(paramDto, translationService);
     }
 }

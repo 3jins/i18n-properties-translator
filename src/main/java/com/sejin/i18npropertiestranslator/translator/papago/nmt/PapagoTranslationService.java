@@ -2,7 +2,9 @@ package com.sejin.i18npropertiestranslator.translator.papago.nmt;
 
 import com.sejin.i18npropertiestranslator.common.constant.LanguageType;
 import com.sejin.i18npropertiestranslator.common.constant.TranslatorName;
+import com.sejin.i18npropertiestranslator.propertiesparser.dto.PropertyDto;
 import com.sejin.i18npropertiestranslator.translator.TranslationService;
+import com.sejin.i18npropertiestranslator.translator.dto.PropertiesTranslationParsedParamDto;
 import com.sejin.i18npropertiestranslator.translator.papago.nmt.dto.PapagoTranslationRequestDto;
 import com.sejin.i18npropertiestranslator.translator.papago.nmt.dto.PapagoTranslationResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -18,14 +20,19 @@ public class PapagoTranslationService implements TranslationService {
     private final RestTemplate papagoTranslatorRestTemplate;
 
     @Override
-    public Boolean supports(TranslatorName translatorName) {
+    public Boolean supports(final TranslatorName translatorName) {
         return translatorName == TranslatorName.PAPAGO;
     }
 
     @Override
-    public String translate(final String text, final LanguageType sourceLanguageType, final LanguageType targetLanguageType) {
+    public String translate(final PropertiesTranslationParsedParamDto parsedParamDto) {
+        final PropertyDto propertyDto = parsedParamDto.getProperty();
+        final String propertyValue = propertyDto.getValue();
+        final LanguageType sourceLanguageType = parsedParamDto.getSourceLanguageType();
+        final LanguageType targetLanguageType = parsedParamDto.getTargetLanguageType();
+
         final PapagoTranslationRequestDto papagoTranslationRequestDto = PapagoTranslationRequestDto.builder()
-                .text(text)
+                .text(propertyValue)
                 .sourceLanguageType(sourceLanguageType.getPapagoCode())
                 .targetLanguageType(targetLanguageType.getPapagoCode())
                 .build();
