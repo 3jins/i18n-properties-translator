@@ -12,6 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PapagoTranslationResponseDto {
     private PapagoTranslationResponseMessageResultDto message;
+    public String getTranslatedText() {
+        return message.getResult().getTranslatedText();
+    }
 
     @Builder
     @Getter
